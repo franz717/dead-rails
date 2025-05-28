@@ -1,196 +1,219 @@
--- Load Orion Library
-local OrionLib = loadstring(game:HttpGet('https://raw.githubusercontent.com/GRPGaming/Key-System/refs/heads/Xycer-Hub-Script/ZusumeLib(Slider)'))()
+-- Memuat Orion Library
+local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/GRPGaming/Key-System/refs/heads/Xycer-Hub-Script/ZusumeLib(Slider)"))()
 
--- Create Window
+-- Membuat jendela utama
 local Window = OrionLib:MakeWindow({
-    Name = "Dead Rails | Orion GUI by xrgadget",
+    Name = "Main Hack",
     HidePremium = false,
     SaveConfig = true,
-    ConfigFolder = "DeadRailsHack",
+    ConfigFolder = "DeadRailsConfig",
     IntroEnabled = true,
-    IntroText = "Dead Rails Script by xrgadget",
-    IntroIcon = "rbxassetid://7733954760",
-    Icon = "rbxassetid://7733954760"
+    IntroText = "Welcome to Dead Rails Hack",
+    IntroIcon = "rbxassetid://4483345998",
+    Icon = "rbxassetid://4483345998",
+    CloseCallback = function()
+        print("GUI Closed")
+    end
 })
 
--- Main Tab
+-- Membuat tab utama
 local MainTab = Window:MakeTab({
-    Name = "Main Hack",
-    Icon = "rbxassetid://7734053495",
+    Name = "Main Features",
+    Icon = "rbxassetid://4483345998",
     PremiumOnly = false
 })
 
--- Variables
-local SpeedEnabled = false
-local SpeedValue = 50
-local FlyEnabled = false
-local FlySpeed = 50
-local AutoFarmEnabled = false
-local NoClipEnabled = false
-local InfHealthEnabled = false
-
--- Speed Hack
-MainTab:AddToggle({
-    Name = "SpeedHack",
-    Default = false,
-    Callback = function(Value) SpeedEnabled = Value end
+-- Membuat bagian untuk SpeedHack
+local SpeedSection = MainTab:AddSection({
+    Name = "SpeedHack"
 })
 
-MainTab:AddSlider({
-    Name = "Speed Value",
+-- Toggle untuk SpeedHack
+SpeedSection:AddToggle({
+    Name = "Enable SpeedHack",
+    Default = false,
+    Callback = function(state)
+        if state then
+            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 100
+        else
+            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+        end
+    end
+})
+
+-- Slider untuk mengatur kecepatan
+SpeedSection:AddSlider({
+    Name = "Set Speed",
     Min = 16,
-    Max = 150,
-    Default = 50,
-    Color = Color3.fromRGB(255,255,0),
+    Max = 200,
+    Default = 100,
+    Color = Color3.fromRGB(255, 255, 255),
     Increment = 1,
     ValueName = "Speed",
-    Callback = function(Value) SpeedValue = Value end
+    Callback = function(value)
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = value
+    end
 })
 
--- Fly Hack
-MainTab:AddToggle({
-    Name = "FlyHack",
+-- Membuat bagian untuk FlyHack
+local FlySection = MainTab:AddSection({
+    Name = "FlyHack"
+})
+
+-- Toggle untuk FlyHack
+FlySection:AddToggle({
+    Name = "Enable FlyHack",
     Default = false,
-    Callback = function(Value) FlyEnabled = Value end
+    Callback = function(state)
+        if state then
+            -- Implementasi FlyHack dengan kontrol arah
+            -- Anda dapat menambahkan skrip fly di sini
+        else
+            -- Menonaktifkan FlyHack
+        end
+    end
 })
 
-MainTab:AddSlider({
-    Name = "Fly Speed",
-    Min = 1,
-    Max = 150,
-    Default = 50,
-    Color = Color3.fromRGB(0,255,255),
+-- Slider untuk mengatur kecepatan terbang
+FlySection:AddSlider({
+    Name = "Set Fly Speed",
+    Min = 10,
+    Max = 200,
+    Default = 100,
+    Color = Color3.fromRGB(255, 255, 255),
     Increment = 1,
-    ValueName = "Fly",
-    Callback = function(Value) FlySpeed = Value end
+    ValueName = "Fly Speed",
+    Callback = function(value)
+        -- Mengatur kecepatan terbang
+    end
 })
 
--- No Clip
-MainTab:AddToggle({
-    Name = "No Clip (tembus tembok)",
-    Default = false,
-    Callback = function(Value) NoClipEnabled = Value end
+-- Membuat bagian untuk fitur lobi
+local LobbySection = MainTab:AddSection({
+    Name = "Lobby Features"
 })
 
--- Infinite Health
-MainTab:AddToggle({
-    Name = "Infinite Health (Tak Bisa Mati)",
-    Default = false,
-    Callback = function(Value) InfHealthEnabled = Value end
-})
-
--- Auto Unlock Trains
-MainTab:AddButton({
+-- Tombol untuk Auto Unlock All Trains
+LobbySection:AddButton({
     Name = "Auto Unlock All Trains",
     Callback = function()
-        local gui = game.Players.LocalPlayer.PlayerGui:FindFirstChild("TrainMenu")
-        if gui then
-            for _, button in pairs(gui:GetDescendants()) do
-                if button:IsA("TextButton") and button.Name == "LockIcon" then
-                    button.Visible = false
-                    if button.Parent:FindFirstChild("TrainName") then
-                        button.Parent.TrainName.TextColor3 = Color3.fromRGB(255, 255, 255)
-                    end
-                end
-            end
-            OrionLib:MakeNotification({Name = "Unlocked", Content = "Semua Train di-unlock (visual)", Time = 3})
-        end
+        -- Implementasi untuk membuka semua kereta
     end
 })
 
--- Auto Unlock Classes
-MainTab:AddButton({
+-- Tombol untuk Auto Unlock All Class
+LobbySection:AddButton({
     Name = "Auto Unlock All Class",
     Callback = function()
-        local gui = game.Players.LocalPlayer.PlayerGui:FindFirstChild("ClassMenu")
-        if gui then
-            for _, class in pairs(gui:GetDescendants()) do
-                if class:IsA("TextButton") and class:FindFirstChild("Locked") then
-                    class.Locked.Visible = false
-                    class.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
-                end
-            end
-            OrionLib:MakeNotification({Name = "Unlocked", Content = "Semua Class di-unlock (visual)", Time = 3})
+        -- Implementasi untuk membuka semua kelas
+    end
+})
+
+-- Membuat bagian untuk fitur tambahan
+local ExtraSection = MainTab:AddSection({
+    Name = "Extra Features"
+})
+
+-- Toggle untuk No Clip
+ExtraSection:AddToggle({
+    Name = "Enable No Clip",
+    Default = false,
+    Callback = function(state)
+        if state then
+            -- Implementasi No Clip
+        else
+            -- Menonaktifkan No Clip
         end
     end
 })
 
--- Auto Join Nearest Train
-MainTab:AddButton({
-    Name = "Auto Join Train",
-    Callback = function()
-        local player = game.Players.LocalPlayer
-        local trains = workspace:FindFirstChild("Trains")
-        if trains and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-            local hrp = player.Character.HumanoidRootPart
-            local closestTrain = nil
-            local shortestDist = math.huge
-            for _, train in pairs(trains:GetChildren()) do
-                if train:IsA("Model") and train:FindFirstChild("Door") then
-                    local dist = (hrp.Position - train.Door.Position).Magnitude
-                    if dist < shortestDist then
-                        shortestDist = dist
-                        closestTrain = train
-                    end
-                end
-            end
-            if closestTrain then
-                hrp.CFrame = closestTrain.Door.CFrame + Vector3.new(0, 3, 0)
-                OrionLib:MakeNotification({Name = "Teleported", Content = "Masuk ke kereta terdekat.", Time = 3})
-            else
-                OrionLib:MakeNotification({Name = "Gagal", Content = "Kereta tidak ditemukan.", Time = 3})
-            end
+-- Toggle untuk Infinite Health
+ExtraSection:AddToggle({
+    Name = "Enable Infinite Health",
+    Default = false,
+    Callback = function(state)
+        if state then
+            -- Implementasi Infinite Health
+        else
+            -- Menonaktifkan Infinite Health
         end
     end
 })
 
--- Teleport to Safe Zone
-MainTab:AddButton({
-    Name = "Teleport ke Safe Zone",
-    Callback = function()
-        local player = game.Players.LocalPlayer
-        if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-            local safeZone = workspace:FindFirstChild("SafeZone")
-            if safeZone then
-                player.Character.HumanoidRootPart.CFrame = safeZone.CFrame + Vector3.new(0, 5, 0)
-                OrionLib:MakeNotification({Name = "Teleport", Content = "Berhasil ke Safe Zone.", Time = 3})
-            else
-                OrionLib:MakeNotification({Name = "Error", Content = "Safe Zone tidak ditemukan.", Time = 3})
-            end
+-- Toggle untuk Auto Kill Aura
+ExtraSection:AddToggle({
+    Name = "Enable Auto Kill Aura (Shovel)",
+    Default = false,
+    Callback = function(state)
+        if state then
+            -- Implementasi Auto Kill Aura dengan sekop
+        else
+            -- Menonaktifkan Auto Kill Aura
         end
     end
 })
 
--- Looping Effects
-local RunService = game:GetService("RunService")
-RunService.RenderStepped:Connect(function()
-    local player = game.Players.LocalPlayer
-    local character = player.Character or player.CharacterAdded:Wait()
-    local hrp = character:FindFirstChild("HumanoidRootPart")
-    local humanoid = character:FindFirstChildOfClass("Humanoid")
-
-    if SpeedEnabled and humanoid then
-        humanoid.WalkSpeed = SpeedValue
-    elseif humanoid then
-        humanoid.WalkSpeed = 16
-    end
-
-    if FlyEnabled and hrp then
-        hrp.Velocity = Vector3.new(0, FlySpeed, 0)
-    end
-
-    if NoClipEnabled and character then
-        for _, part in pairs(character:GetDescendants()) do
-            if part:IsA("BasePart") and part.CanCollide == true then
-                part.CanCollide = false
-            end
+-- Toggle untuk Auto Gun Kill Aura
+ExtraSection:AddToggle({
+    Name = "Enable Auto Gun Kill Aura",
+    Default = false,
+    Callback = function(state)
+        if state then
+            -- Implementasi Auto Gun Kill Aura
+        else
+            -- Menonaktifkan Auto Gun Kill Aura
         end
     end
+})
 
-    if InfHealthEnabled and humanoid then
-        humanoid.Health = humanoid.MaxHealth
+-- Membuat bagian untuk Teleport
+local TeleportSection = MainTab:AddSection({
+    Name = "Teleport"
+})
+
+-- Dropdown untuk memilih lokasi teleportasi
+TeleportSection:AddDropdown({
+    Name = "Select Teleport Location",
+    Default = "Base 0km",
+    Options = {
+        "Base 0km",
+        "Base 10km",
+        "Base 20km",
+        "Base 30km",
+        "Base 40km",
+        "Base 50km",
+        "Base 60km",
+        "Base 70km",
+        "Base 80km",
+        "Train",
+        "Lab Tesla",
+        "Sterling",
+        "Castle",
+        "Fort",
+        "End"
+    },
+    Callback = function(value)
+        -- Implementasi teleportasi ke lokasi yang dipilih
     end
-end)
+})
 
--- Init GUI
+-- Membuat bagian untuk tampilan kamera
+local CameraSection = MainTab:AddSection({
+    Name = "Camera View"
+})
+
+-- Toggle untuk 3rd Person View
+CameraSection:AddToggle({
+    Name = "Enable 3rd Person View",
+    Default = false,
+    Callback = function(state)
+        if state then
+            -- Mengaktifkan 3rd Person View
+        else
+            -- Menonaktifkan 3rd Person View
+        end
+    end
+})
+
+-- Inisialisasi Orion Library
 OrionLib:Init()
